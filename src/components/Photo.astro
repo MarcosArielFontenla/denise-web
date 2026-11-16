@@ -1,0 +1,9 @@
+---
+interface Props { src: string; alt: string; placeholder?: string; loading?: "eager" | "lazy" }
+const { src, alt, placeholder = "Tu fotografía profesional va acá", loading = "lazy" } = Astro.props;
+---
+{src ? (
+  <div class="photo"><img src={src} alt={alt} loading={loading} decoding="async" /></div>
+) : (
+  <div class="photo photo--empty" role="img" aria-label={alt}><span>{placeholder}</span></div>
+)}

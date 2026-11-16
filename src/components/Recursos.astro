@@ -1,0 +1,22 @@
+---
+import { site } from "../config/site";
+const visibles = site.resources.filter((r) => r.status !== "oculto");
+---
+{visibles.length > 0 && (
+<section class="section" id="recursos" aria-labelledby="recursos-titulo">
+  <div class="container">
+    <h2 id="recursos-titulo">Ideas y herramientas para tu <em>día a día</em>.</h2>
+    <p class="lead">Un espacio para materiales psicoeducativos que se irán sumando.</p>
+    <div class="resources__grid">
+      {visibles.map((r) => (
+        <article class="resource">
+          <span class="tag">{r.status === "disponible" ? "Disponible" : "Próximamente"}</span>
+          <h3>{r.title}</h3>
+          <p class="small">{r.description}</p>
+          {r.status === "disponible" && r.url && <p><a href={r.url}>Ver recurso</a></p>}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+)}

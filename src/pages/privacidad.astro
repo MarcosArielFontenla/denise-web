@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../config/site";
+const sections = site.legal.privacy;
+---
+<Base title="Aviso de privacidad" path="/privacidad/">
+  <article class="container legal">
+    <h1>Aviso de privacidad</h1>
+    <p class="small">Última actualización: {site.legal.updated}</p>
+    {sections.map((s) => (
+      <section>
+        <h2 style="font-size:1.4rem">{s.title}</h2>
+        <p>{s.body}</p>
+      </section>
+    ))}
+    {site.form.providerName && <section><h2 style="font-size:1.4rem">Proveedor del formulario</h2><p>Los mensajes del formulario son procesados por {site.form.providerName}.</p></section>}
+    {site.contact.email && <p>Contacto para ejercer tus derechos: <a href={`mailto:${site.contact.email}`}>{site.contact.email}</a></p>}
+    <p class="small">{site.legal.siteNotice} {site.legal.emergency}</p>
+  </article>
+</Base>

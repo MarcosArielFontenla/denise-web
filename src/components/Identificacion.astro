@@ -1,0 +1,24 @@
+---
+const items = [
+  "Terminás el día y tu cabeza sigue repasando todo lo que pasó.",
+  "Te cuesta decidir cuando no podés tener la certeza de que va a salir bien.",
+  "Te exigís mucho, pero casi nunca sentís que sea suficiente.",
+  "Descansar te cuesta porque sentís que siempre hay algo pendiente.",
+  "Sabés qué te gustaría cambiar, pero te cuesta sostenerlo en el día a día.",
+  "A veces dejás de hacer cosas que te importan para evitar sentir ansiedad o incertidumbre.",
+];
+---
+<section class="section identify" aria-labelledby="identifica-titulo">
+  <div class="container identify__grid">
+    <div>
+      <h2 id="identifica-titulo"> Sin tener todo resuelto, podés vivir de <em>otra manera</em>.</h2>
+    </div>
+    <div>
+      <p class="lead">Esto es para vos si:</p>
+      <ul class="checklist">
+        {items.map((i) => <li>{i}</li>)}
+      </ul>
+      <p class="quote identify__close">No se trata de eliminar todas las emociones difíciles, sino de aprender a relacionarte con ellas de otra manera.</p>
+    </div>
+  </div>
+</section>

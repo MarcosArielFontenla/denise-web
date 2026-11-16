@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.deniseberdeja.com.ar/sitemap-index.xml

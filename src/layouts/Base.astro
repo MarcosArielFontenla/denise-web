@@ -1,0 +1,85 @@
+---
+import "@fontsource/manrope/400.css";
+import "@fontsource/manrope/500.css";
+import "@fontsource/manrope/600.css";
+import "@fontsource/cormorant-garamond/500-italic.css";
+import "@fontsource/cormorant-garamond/600.css";
+import "../styles/global.css";
+import { site } from "../config/site";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props { title?: string; description?: string; path?: string; noindex?: boolean }
+const { title, description = site.description, path = "/", noindex = false } = Astro.props;
+const fullTitle = title ? `${title} · ${site.brand}` : `${site.brand} · Psicología online · ${site.tagline}`;
+const canonical = new URL(path, site.domain).toString();
+const ogImage = site.photos.ogImage ? new URL(site.photos.ogImage, site.domain).toString() : "";
+const a = site.analytics;
+
+const ld = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: site.signature,
+  url: site.domain,
+  description: site.description,
+  areaServed: "AR",
+  availableLanguage: "es",
+  sameAs: site.contact.instagram ? [`https://www.instagram.com/${site.contact.instagram}/`] : [],
+};
+---
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#ffffff" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={site.locale} />
+    <meta property="og:site_name" content={site.brand} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content={ogImage ? "summary_large_image" : "summary"} />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    {a.provider === "plausible" && a.plausibleDomain && (
+      <script defer data-domain={a.plausibleDomain} src="https://plausible.io/js/script.js"></script>
+    )}
+    {a.provider === "umami" && a.umamiSrc && a.umamiWebsiteId && (
+      <script defer src={a.umamiSrc} data-website-id={a.umamiWebsiteId}></script>
+    )}
+    <script is:inline>document.documentElement.classList.add("js");</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <Header />
+    <main id="contenido"><slot /></main>
+    <Footer />
+<script>
+      const targets = document.querySelectorAll(
+        ".section h2, .section p, .checklist li, .pillar, .service, .resource, .edition, .format li, .faq details, .about__visual, .contact__list li"
+      );
+      if ("IntersectionObserver" in window) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("is-visible");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.15 }
+        );
+        targets.forEach((el) => io.observe(el));
+      } else {
+        targets.forEach((el) => el.classList.add("is-visible"));
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+---
+import { whatsappUrl, isExternal } from "../lib/links";
+interface Props {
+  texto?: string;
+  mensaje?: "general" | "pareja" | "programa";
+}
+const { texto = "Quiero mi sesión", mensaje = "general" } = Astro.props;
+const href = whatsappUrl(mensaje);
+---
+<a
+  class="btn btn--wa"
+  href={href}
+  {...(isExternal(href) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+>{texto}</a>

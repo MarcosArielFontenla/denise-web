@@ -1,0 +1,23 @@
+---
+import { site } from "../config/site";
+import { whatsappUrl, isExternal } from "../lib/links";
+import Photo from "./Photo.astro";
+const wa = whatsappUrl("general");
+---
+<section class="hero" id="inicio" aria-labelledby="hero-titulo">
+  <div class="container hero__grid">
+    <div>
+      <h1 id="hero-titulo" data-hero="1">Tu mente como <em>aliada</em>.</h1>
+      <p class="lead" data-hero="2">Un espacio para comprender lo que te pasa, desarrollar herramientas y empezar a construir una vida más alineada con lo que de verdad te importa.</p>
+      <div class="actions" data-hero="3">
+        <a class="btn btn--primary" href="#metodo">Conocé cómo puedo acompañarte</a>
+        <a class="btn btn--ghost" href={wa} {...(isExternal(wa) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>Quiero mi sesión</a>
+      </div>
+      <p class="hero__sign" data-hero="3">{site.signature}</p>
+    </div>
+    <div class="hero__visual" data-hero="2">
+      <span class="hero__line" aria-hidden="true"></span>
+      <Photo src={site.photos.hero} alt={site.photos.heroAlt} loading="eager" />
+    </div>
+  </div>
+</section>

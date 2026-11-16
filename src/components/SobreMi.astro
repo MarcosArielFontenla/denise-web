@@ -1,0 +1,18 @@
+---
+import { site } from "../config/site";
+import Photo from "./Photo.astro";
+---
+<section class="section about" id="sobre-mi" aria-labelledby="sobre-titulo">
+  <div class="container about__grid">
+    <div class="about__visual">
+      <Photo src={site.photos.about} alt={site.photos.aboutAlt} />
+    </div>
+    <div>
+      <h2 id="sobre-titulo">Hola, soy <em>Denu</em>.</h2>
+      <p>Soy {site.professional.title} y trabajo desde enfoques basados en evidencia, especialmente TCC y ACT, integrando herramientas de mindfulness.</p>
+      <p>Me encanta acompañar procesos en los que las personas puedan ver y entender sus patrones, puedan adquirir recursos y herramientas propias, y construir una vida más alineada a lo que les importa: que no esté organizada exclusivamente alrededor de la preocupación, el control o la exigencia.</p>
+      <p>Me identifico con una terapia cálida, práctica, reflexiva y respetuosa de los tiempos de cada proceso. Quiero que sientas que vas a encontrar un espacio profesional, humano y sin juicios.</p>
+      {site.professional.license && <p class="small">{site.professional.title} · {site.professional.license}{site.professional.licenseBody && ` (${site.professional.licenseBody})`}</p>}
+    </div>
+  </div>
+</section>

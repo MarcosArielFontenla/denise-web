@@ -1,0 +1,131 @@
+---
+import { site } from "../config/site";
+import { whatsappIsConfigured } from "../lib/links";
+import { contactPhoneMaxLength } from "../lib/contact-phone";
+---
+<form class="form" id="form-contacto" method="post" action="/api/contacto"
+  data-min-seconds={site.form.minSecondsBeforeSubmit} data-has-whatsapp={String(whatsappIsConfigured())}>
+  <div class="field">
+    <label for="nombre">Nombre</label>
+    <input id="nombre" name="nombre" type="text" autocomplete="name" required maxlength="100" />
+    <p class="error" id="nombre-error" hidden></p>
+  </div>
+  <div class="field">
+    <label for="email">Correo electrónico</label>
+    <input id="email" name="email" type="email" autocomplete="email" required maxlength="150" />
+    <p class="error" id="email-error" hidden></p>
+  </div>
+  <div class="field">
+    <label for="telefono">Teléfono</label>
+    <input id="telefono" name="telefono" type="tel" autocomplete="tel" required
+      maxlength={contactPhoneMaxLength} aria-describedby="telefono-hint" />
+    <p class="hint" id="telefono-hint">Incluí el código de área. Ejemplo: +54 9 11 2345 6789.</p>
+    <p class="error" id="telefono-error" hidden></p>
+  </div>
+  <div class="field">
+    <label for="interes">¿Sobre qué querés consultar?</label>
+    <select id="interes" name="interes" required>
+      <option value="">Elegí una opción</option>
+      {site.form.topics.map(({ value, label }) => <option value={value}>{label}</option>)}
+    </select>
+    <p class="error" id="interes-error" hidden></p>
+  </div>
+  <div class="field">
+    <label for="mensaje">Mensaje (opcional)</label>
+    <textarea id="mensaje" name="mensaje" maxlength="1000" aria-describedby="mensaje-hint"></textarea>
+    <p class="hint" id="mensaje-hint">Por favor, no incluyas información clínica sensible. Los detalles los conversamos después.</p>
+  </div>
+  <div class="field trap" aria-hidden="true">
+    <label for="empresa">No completar este campo</label>
+    <input id="empresa" name="empresa" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <div class="field field--check">
+    <input id="consentimiento" name="consentimiento" type="checkbox" required />
+    <label for="consentimiento">Acepto que se usen mis datos para responder esta consulta, según el <a href="/privacidad/">aviso de privacidad</a>.</label>
+  </div>
+  <p class="error" id="consentimiento-error" hidden style="color:#8a2d2d;font-size:.88rem;font-weight:600"></p>
+  <button class="btn btn--primary" type="submit" data-submit>Enviar mensaje</button>
+  <div class="status" role="status" aria-live="polite" data-status hidden></div>
+</form>
+
+<script>
+  import { isContactPhoneValid } from "../lib/contact-phone";
+
+  const form = document.querySelector<HTMLFormElement>("#form-contacto");
+  if (form) {
+    const status = form.querySelector<HTMLElement>("[data-status]")!;
+    const button = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+    form.noValidate = true;
+    const hasWhatsApp = form.dataset.hasWhatsapp === "true";
+    const minSeconds = Number(form.dataset.minSeconds || 3);
+    const openedAt = Date.now();
+
+    // Preselección desde el enlace (?interes=admision)
+    const interes = new URLSearchParams(location.search).get("interes");
+    const select = form.querySelector<HTMLSelectElement>("#interes")!;
+    if (interes && [...select.options].some((o) => o.value === interes)) select.value = interes;
+
+    const showStatus = (msg: string, isError = false) => {
+      status.textContent = msg;
+      status.hidden = false;
+      status.classList.toggle("status--error", isError);
+    };
+    const setError = (id: string, msg: string, hintId = "") => {
+      const input = form.querySelector<HTMLElement>(`#${id}`)!;
+      const err = form.querySelector<HTMLElement>(`#${id}-error`)!;
+      err.textContent = msg;
+      err.hidden = !msg;
+      if (msg) input.setAttribute("aria-invalid", "true");
+      else input.removeAttribute("aria-invalid");
+      const descriptions = [hintId, msg && err.id].filter(Boolean).join(" ");
+      if (descriptions) input.setAttribute("aria-describedby", descriptions);
+      else input.removeAttribute("aria-describedby");
+      return !msg;
+    };
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.hidden = true;
+      const data = new FormData(form);
+      const name = String(data.get("nombre") || "").trim();
+      const email = String(data.get("email") || "").trim();
+      const phone = String(data.get("telefono") || "").trim();
+      const topic = String(data.get("interes") || "");
+      const okName = setError("nombre", name ? "" : "Escribí tu nombre.");
+      const okMail = setError("email", /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "" : "Revisá el correo: parece incompleto.");
+      const phoneError = phone ? "Revisá el teléfono: ingresá entre 8 y 15 dígitos, con el código de área." : "Escribí tu teléfono.";
+      const okPhone = setError("telefono", isContactPhoneValid(phone) ? "" : phoneError, "telefono-hint");
+      const okTopic = setError("interes", topic ? "" : "Elegí un tema de consulta.");
+      const okConsent = setError("consentimiento", (form.querySelector<HTMLInputElement>("#consentimiento")!.checked) ? "" : "Necesitamos tu aceptación para poder responderte.");
+      if (!(okName && okMail && okPhone && okTopic && okConsent)) {
+        form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
+        return;
+      }
+
+      // Protección básica anti-spam: campo trampa y tiempo mínimo
+      if (data.get("empresa") || Date.now() - openedAt < minSeconds * 1000) {
+        showStatus("No pudimos enviar el mensaje. Esperá unos segundos e intentá de nuevo.", true);
+        return;
+      }
+
+      button.disabled = true;
+      const label = button.textContent;
+      button.textContent = "Enviando…";
+      try {
+        const body = new URLSearchParams();
+        for (const [key, value] of data) {
+          if (typeof value === "string") body.append(key, value);
+        }
+        const res = await fetch(form.action, { method: "POST", body, headers: { Accept: "application/json" } });
+        if (!res.ok || (await res.json()).ok !== true) throw new Error("Falló el envío");
+        form.reset();
+        showStatus("Tu mensaje fue enviado. Te voy a responder por correo electrónico.");
+      } catch {
+        showStatus("No se pudo enviar el mensaje. Intentá de nuevo" + (hasWhatsApp ? " o escribime por WhatsApp." : " más tarde."), true);
+      } finally {
+        button.disabled = false;
+        button.textContent = label;
+      }
+    });
+  }
+</script>

@@ -1,0 +1,23 @@
+---
+const pillars = [
+  { t: "Comprenderte", d: "Entender qué te pasa, reconocer patrones y descubrir cómo tus pensamientos, emociones y experiencias influyen en tu manera de actuar." },
+  { t: "Desarrollar herramientas", d: "Aprender nuevas formas de responder, relacionarte con tus pensamientos, flexibilizar la autoexigencia y afrontar aquello que te resulta difícil." },
+  { t: "Expandir tus posibilidades", d: "Transformar lo que vas descubriendo en decisiones, hábitos y acciones concretas que te acerquen a la vida que querés construir." },
+];
+---
+<section class="section method" id="metodo" aria-labelledby="metodo-titulo">
+  <div class="container">
+    <div class="method__head">
+      <h2 id="metodo-titulo">Comprenderte es el comienzo. Construir <em>nuevas posibilidades</em> es el camino.</h2>
+    </div>
+    <div class="pillars">
+      {pillars.map((p) => (
+        <article class="pillar">
+          <h3>{p.t}</h3>
+          <p>{p.d}</p>
+        </article>
+      ))}
+    </div>
+    <p class="method__note">Mi enfoque integra la Terapia Cognitivo-Conductual (TCC), la Terapia de Aceptación y Compromiso (ACT) y mindfulness. Combino herramientas basadas en evidencia con una mirada individual, porque cada persona tiene una historia, necesidades y objetivos diferentes.</p>
+  </div>
+</section>

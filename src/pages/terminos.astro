@@ -1,0 +1,19 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../config/site";
+const sections = site.legal.terms;
+---
+<Base title="Términos y condiciones" path="/terminos/">
+  <article class="container legal">
+    <h1>Términos y condiciones</h1>
+    <p class="small">Última actualización: {site.legal.updated}</p>
+    {sections.map((s) => (
+      <section>
+        <h2 style="font-size:1.4rem">{s.title}</h2>
+        <p>{s.body}</p>
+      </section>
+    ))}
+    
+    <p class="small">{site.legal.siteNotice} {site.legal.emergency}</p>
+  </article>
+</Base>

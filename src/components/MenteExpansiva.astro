@@ -1,0 +1,73 @@
+---
+import { site } from "../config/site";
+import { whatsappUrl, formatARS, isExternal } from "../lib/links";
+const p = site.program;
+const wa = whatsappUrl("programa");
+const ext = (u: string) => (isExternal(u) ? { target: "_blank", rel: "noopener noreferrer" } : {});
+const format = [
+  { k: "8 semanas", v: "Un recorrido con continuidad y estructura." },
+  { k: "Encuentros semanales", v: "60 minutos para aprender y practicar." },
+  { k: "Grupo cerrado", v: "Un espacio reducido y estable." },
+  { k: "WhatsApp", v: "Un espacio de intercambio entre encuentros, con pautas claras de uso." },
+  { k: "Entrevista de admisión", v: "Una conversación individual gratuita para conocer la propuesta y evaluar si es adecuada para vos." },
+  { k: p.edition, v: "La primera edición del programa." },
+];
+const goals = [
+  "Entender cómo funciona la ansiedad y qué puede mantenerla.",
+  "Aprender a tomar distancia de los pensamientos sin tener que resolverlos todos.",
+  "Relacionarte con la incertidumbre de una forma más flexible.",
+  "Reconocer patrones de control, evitación y autoexigencia.",
+  "Practicar herramientas y llevarlas a situaciones reales de tu vida.",
+  "Conectar con tus valores y convertirlos en acciones concretas.",
+];
+const spots = p.spots ? `${p.spots} lugares` : "Cupos reducidos";
+---
+<section class="section program on-dark" id="mente-expansiva" aria-labelledby="mente-titulo">
+  <div class="container">
+    <div class="program__head">
+      <div>
+        <span class="badge">{p.edition}</span>
+        <p class="program__name">{p.name}</p>
+        <h2 id="mente-titulo">8 semanas para dejar de vivir con la <em>cabeza a mil</em>.</h2>
+      </div>
+      <div>
+        <p class="lead">Un programa psicoeducativo grupal para entender mejor tu ansiedad, aprender herramientas para trabajar con tus pensamientos y dejar de necesitar tener todo resuelto para dar pasos hacia la vida que querés.</p>
+        <p class="small">Una propuesta para mujeres que quieren comprender lo que les pasa, aprender con otras personas y llevar la psicología a su día a día.</p>
+      </div>
+    </div>
+
+    <ul class="format">
+      {format.map((f) => <li><strong>{f.k}</strong><span>{f.v}</span></li>)}
+    </ul>
+
+    <div class="program__body">
+      <div>
+        <h3>Qué buscamos trabajar</h3>
+        <ul class="checklist">
+          {goals.map((g) => <li>{g}</li>)}
+        </ul>
+      </div>
+      <aside class="edition" aria-labelledby="edicion-titulo">
+        <h3 id="edicion-titulo">{p.edition}</h3>
+        <p class="price">{formatARS(p.price)}</p>
+        <p class="small">{p.priceNote}</p>
+        <dl>
+          <dt>Cupos</dt><dd>{spots}</dd>
+          <dt>Inicio</dt><dd>{p.startDates || "A confirmar"}</dd>
+          <dt>Horario</dt><dd>{p.schedule || "A confirmar"}</dd>
+          <dt>Medios de pago</dt><dd>{p.paymentMethods}</dd>
+        </dl>
+        <div class="actions">
+          <a class="btn btn--primary" href={wa} {...ext(wa)}>Quiero conocer Mente Expansiva</a>
+          <a class="btn btn--ghost" href="/?interes=admision#contacto">Quiero solicitar una entrevista de admisión</a>
+        </div>
+        {p.enrollmentUrl && <p class="small" style="margin-top:1rem"><a href={p.enrollmentUrl} target="_blank" rel="noopener noreferrer">Enlace de inscripción</a></p>}
+      </aside>
+    </div>
+
+    <p class="program__disclaimer">¿Es para vos?
+
+Mente Expansiva es un programa psicoeducativo grupal, no un tratamiento. Está orientado al aprendizaje y la práctica de herramientas psicológicas; no reemplaza la atención clínica individual cuando esta sea necesaria.
+.</p>
+  </div>
+</section>

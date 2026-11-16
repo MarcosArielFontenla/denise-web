@@ -1,0 +1,27 @@
+---
+import { site } from "../config/site";
+import { whatsappUrl, instagramUrl, isExternal } from "../lib/links";
+import ContactForm from "./ContactForm.astro";
+const wa = whatsappUrl("general");
+const ig = instagramUrl();
+const c = site.contact;
+const p = site.professional;
+---
+<section class="section" id="contacto" aria-labelledby="contacto-titulo">
+  <div class="container contact__grid">
+    <div>
+      <h2 id="contacto-titulo">Podés empezar por una <em>conversación</em>.</h2>
+      <p class="lead">Si querés conocer más sobre la psicoterapia o Mente Expansiva, escribime y vemos cuál puede ser el espacio más adecuado para vos.</p>
+      <div class="actions">
+        <a class="btn btn--primary" href={wa} {...(isExternal(wa) ? { target: "_blank", rel: "noopener noreferrer" } : {})}>Escribime por WhatsApp</a>
+        {ig && <a class="btn btn--ghost" href={ig} target="_blank" rel="noopener noreferrer">Instagram</a>}
+      </div>
+      <ul class="contact__list">
+        {c.email && <li><span>Correo electrónico</span><a href={`mailto:${c.email}`}>{c.email}</a></li>}
+        <li><span>Datos profesionales</span>{site.brand} · {p.title}{p.license && ` · ${p.license}`}{p.licenseBody && ` (${p.licenseBody})`}</li>
+        <li><span>Privacidad</span><a href="/privacidad/">Leer el aviso de privacidad</a></li>
+      </ul>
+    </div>
+    <ContactForm />
+  </div>
+</section>

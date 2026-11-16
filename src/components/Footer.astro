@@ -1,0 +1,22 @@
+---
+import { site } from "../config/site";
+import { instagramUrl } from "../lib/links";
+const links = [...site.nav, { label: "Privacidad", href: "/privacidad/" }, { label: "Términos", href: "/terminos/" }];
+const ig = instagramUrl();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <p class="serif" style="font-size:1.6rem;margin-bottom:.3rem">{site.signature}</p>
+        <p class="small">{site.professional.title}{site.professional.license && ` · ${site.professional.license}`}</p>
+        {ig && <p class="small"><a href={ig} target="_blank" rel="noopener noreferrer">Instagram @{site.contact.instagram}</a></p>}
+      </div>
+      <nav aria-label="Pie de página" class="footer__nav">
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+    </div>
+    <p class="footer__notice">{site.legal.siteNotice} {site.legal.emergency}</p>
+    <p class="small">© {new Date().getFullYear()} {site.brand}. Todos los derechos reservados.</p>
+  </div>
+</footer>

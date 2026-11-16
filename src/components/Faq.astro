@@ -1,0 +1,27 @@
+---
+const faqs = [
+  { q: "¿Cómo funciona la psicoterapia online?", a: "Las sesiones se realizan por videollamada, en un horario acordado previamente. Solo necesitás un dispositivo con conexión a internet y un lugar donde puedas hablar con tranquilidad." },
+  { q: "¿Cuánto dura una sesión?", a: "La psicoterapia individual dura alrededor de 50 minutos y la terapia de pareja, alrededor de 70. Son duraciones orientativas." },
+  { q: "¿Cómo consulto por disponibilidad?", a: "Escribime por WhatsApp o completá el formulario de contacto y te respondo con los horarios disponibles." },
+  { q: "¿Qué diferencia hay entre psicoterapia individual y Mente Expansiva?", a: "La psicoterapia individual es un espacio 1:1, centrado en tu situación particular. Mente Expansiva es un programa psicoeducativo grupal de ocho semanas, con un formato definido y herramientas pensadas para trabajar en la vida cotidiana." },
+  { q: "¿El programa psicoeducativo reemplaza la terapia?", a: "No. Mente Expansiva no reemplaza la psicoterapia: puede ser un complemento. Si estás en tratamiento o creés que lo necesitás, lo conversamos antes de que te sumes." },
+  { q: "¿Cómo se realiza la entrevista de admisión?", a: "Es una conversación individual y gratuita, previa al inicio del programa. Sirve para conocernos, contarte cómo funciona Mente Expansiva y evaluar juntas si es el espacio adecuado para vos en este momento." },
+  { q: "¿Qué sucede después de completar un formulario de contacto?", a: "Recibo tu mensaje y te respondo por correo electrónico para coordinar una primera conversación. Te pedimos que no incluyas información clínica sensible en el formulario." },
+];
+---
+<section class="section faq" id="preguntas" aria-labelledby="faq-titulo">
+  <div class="container faq__grid">
+    <div>
+      <h2 id="faq-titulo">Preguntas <em>frecuentes</em>.</h2>
+      <p class="small">¿Te quedó otra duda? Escribime y la respondemos.</p>
+    </div>
+    <div>
+      {faqs.map((f) => (
+        <details>
+          <summary>{f.q}</summary>
+          <div><p>{f.a}</p></div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,38 @@
+---
+import Base from "../layouts/Base.astro";
+import Hero from "../components/Hero.astro";
+import Identificacion from "../components/Identificacion.astro";
+import Metodo from "../components/Metodo.astro";
+import SobreMi from "../components/SobreMi.astro";
+import Psicoterapia from "../components/Psicoterapia.astro";
+import MenteExpansiva from "../components/MenteExpansiva.astro";
+import Recursos from "../components/Recursos.astro";
+import Faq from "../components/Faq.astro";
+import Contacto from "../components/Contacto.astro";
+import BotonWhatsApp from "../components/BotonWhatsApp.astro";
+---
+<Base>
+  <Hero />
+<div class="marquee">
+    <p class="visually-hidden">CONECTAR CON LO QUE TE IMPORTA</p>
+    <div class="marquee__track" aria-hidden="true">
+      <ul class="marquee__group">
+        {Array.from({ length: 6 }).map(() => <li>CONECTAR CON LO QUE TE IMPORTA</li>)}
+      </ul>
+      <ul class="marquee__group">
+        {Array.from({ length: 6 }).map(() => <li>CONECTAR CON LO QUE TE IMPORTA</li>)}
+      </ul>
+    </div>
+  </div>
+  <Identificacion />
+<div class="container" style="padding-block: 2rem;">
+  <BotonWhatsApp />
+</div>
+  <Metodo />
+  <SobreMi />
+  <Psicoterapia />
+  <MenteExpansiva />
+  <Recursos />
+  <Faq />
+  <Contacto />
+</Base>

@@ -1,0 +1,58 @@
+---
+import { site } from "../config/site";
+import { whatsappUrl, formatARS, isExternal } from "../lib/links";
+const areas = [
+  "Ansiedad y preocupación.",
+  "Sobrepensamiento",
+  "Autoexigencia y descanso.",
+  "Regulación emocional.",
+  "Autoestima y límites.",
+  "Estrés y agotamiento.",
+  "Duelos y cambios vitales.",
+  "Hábitos y valores personales.",
+];
+const s = site.services;
+const waInd = whatsappUrl("general");
+const waPar = whatsappUrl("pareja");
+const ext = (u: string) => (isExternal(u) ? { target: "_blank", rel: "noopener noreferrer" } : {});
+---
+<section class="section therapy" id="psicoterapia" aria-labelledby="terapia-titulo">
+  <div class="container">
+    <div class="therapy__head">
+      <h2 id="terapia-titulo">Un espacio para trabajar en <em>lo que te importa</em>.</h2>
+      <p class="lead">Ofrezco psicoterapia para personas adultas, en modalidad online. Estas son algunas de las áreas de trabajo:</p>
+      <ul class="areas">
+        {areas.map((a) => <li>{a}</li>)}
+      </ul>
+      <p class="small">Cada proceso es diferente. Por eso, el tratamiento se adapta a tu situación, tus necesidades y tus objetivos, integrando herramientas de la psicología basada en evidencia.
+
+Las áreas mencionadas son orientativas; el abordaje y la pertinencia de la terapia se evalúan de manera individual.</p>
+    </div>
+
+    <div class="services">
+      <article class="service" aria-labelledby="ind-titulo">
+        <p class="small">Psicoterapia 1:1</p>
+        <h3 id="ind-titulo">{s.individual.name}</h3>
+        <p>Psicoterapia individual para personas adultas, para comprender tus patrones, sumar herramientas y avanzar hacia lo que te importa.</p>
+        <dl>
+          <dt>Modalidad</dt><dd>{s.individual.modality}</dd>
+          <dt>Duración</dt><dd>{s.individual.duration}</dd>
+          <dt>Honorarios de referencia</dt><dd class="price">{formatARS(s.individual.price)}<span class="small"> por sesión</span></dd>
+        </dl>
+        <a class="btn btn--primary" href={waInd} {...ext(waInd)}>Quiero una sesión</a>
+      </article>
+
+      <article class="service service--pareja" aria-labelledby="par-titulo">
+        <p class="small">Terapia de pareja</p>
+        <h3 id="par-titulo">{s.pareja.name}</h3>
+        <p>Trabajo desde el marco de la Terapia Integral de Pareja (Terapias Cognitivas Contextuales): acompaño a la pareja a identificar puntos de mejora, desarrollar nuevas habilidades de comunicación, fomentar dinámicas saludables y atravesar momentos difíciles.</p>
+        <dl>
+          <dt>Modalidad</dt><dd>{s.pareja.modality}</dd>
+          <dt>Duración</dt><dd>{s.pareja.duration}</dd>
+          <dt>Honorarios de referencia</dt><dd class="price">{formatARS(s.pareja.price)}<span class="small"> por sesión</span></dd>
+        </dl>
+        <a class="btn btn--primary" href={waPar} {...ext(waPar)}>Quiero una sesión</a>
+      </article>
+    </div>
+  </div>
+</section>
