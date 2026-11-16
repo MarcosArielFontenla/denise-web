@@ -108,7 +108,14 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 @media (max-width: 860px) {
   .menu-toggle { display: inline-flex; align-items: center; }
-  .nav { position: absolute; inset: var(--header-h) 0 auto 0; background: var(--white); border-bottom: 1px solid var(--rose-line); padding: 0.5rem 1.25rem 1.5rem; display: none; }
+  .nav {
+    position: absolute; inset: var(--header-h) 0 auto 0;
+    max-height: calc(100vh - var(--header-h));
+    max-height: calc(100dvh - var(--header-h));
+    overflow-y: auto;
+    background: var(--white); border-bottom: 1px solid var(--rose-line);
+    padding: 0.5rem 1.25rem 1.5rem; display: none;
+  }
   .nav.is-open { display: block; }
   .nav-list { flex-direction: column; align-items: stretch; gap: 0; }
   .nav-list a { display: block; padding: 1rem 0; border-bottom: 1px solid var(--rose-line); font-size: 1.05rem; background: none; }
@@ -130,6 +137,14 @@ ul { margin: 0; padding: 0; list-style: none; }
 @media (max-width: 860px) {
   .hero__grid { grid-template-columns: 1fr; }
   .hero__visual { max-width: 380px; padding: 0 0 1.5rem 1.5rem; }
+}
+@media (min-width: 600px) and (max-width: 860px) and (orientation: portrait) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    align-items: center;
+  }
+  .hero h1 { font-size: clamp(2.7rem, 6vw, 3.25rem); }
 }
 
 /* ============ Identificación ============ */
@@ -181,6 +196,10 @@ ul { margin: 0; padding: 0; list-style: none; }
   .areas { grid-template-columns: 1fr; }
   .services { grid-template-columns: 1fr; }
   .service--pareja { margin-top: 0; }
+}
+@media (max-width: 380px) {
+  .service dl { grid-template-columns: 1fr; row-gap: 0.25rem; }
+  .service dd:not(:last-child) { margin-bottom: 0.5rem; }
 }
 
 /* ============ Mente Expansiva ============ */
